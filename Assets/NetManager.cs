@@ -118,22 +118,26 @@ public class NetManager : MonoBehaviourPunCallbacks
         Debug.Log("OnJoinRandomFailed 호출됨");
     }
 
-    
-    public void GameStart()
-    {
-
-    }
+    //[PunRPC]
+    //public void GameStart()
+    //{
+    //    PhotonNetwork.LoadLevel(1);
+    //}
 
     public void ButtonFunc()
     {
-        if (PhotonNetwork.IsMasterClient == true)
-        {
-            stateText.text = "마스터 클라이언트입니다.";
-        }
-        else
-        {
-            stateText.text = "마스터 클라이언트가 아닙니다.";
-        }
+        PhotonNetwork.LoadLevel(1);
+    }
+
+    public void SendMessageBtn()
+    {
+        photonView.RPC("CheckLog", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    void CheckLog()
+    {
+        Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     }
 
 }
