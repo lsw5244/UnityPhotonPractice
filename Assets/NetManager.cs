@@ -77,7 +77,15 @@ public class NetManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("OnJoinedRoom 호출됨");
         stateText.text = "Room에 입장 함";
-        startBtn.interactable = true;
+        if (PhotonNetwork.IsMasterClient == true)
+        {
+            startBtn.interactable = true;
+            stateText.text += "\n 마스터 클라이언트 입니다.";
+        }
+        else
+        {
+            startBtn.interactable = false;
+        }
     }
 
     // Room을 만들면 호출되는 콜백 함수.
@@ -109,4 +117,23 @@ public class NetManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("OnJoinRandomFailed 호출됨");
     }
+
+    
+    public void GameStart()
+    {
+
+    }
+
+    public void ButtonFunc()
+    {
+        if (PhotonNetwork.IsMasterClient == true)
+        {
+            stateText.text = "마스터 클라이언트입니다.";
+        }
+        else
+        {
+            stateText.text = "마스터 클라이언트가 아닙니다.";
+        }
+    }
+
 }
