@@ -9,22 +9,19 @@ using Photon.Realtime;
 public class NetManager : MonoBehaviourPunCallbacks
 {
     public Text stateText;
+    public Button startBtn;
 
     string gameVersion = "1";
 
     private void Awake()
     {
-        // 기본 로비에 입장하기
-        // 마스터 서버에서 이것은 현재 사용 중인 방을 나열하는 기본 로비에 합류합니다.
-        //PhotonNetwork.JoinLobby();
-
-
         // 로그를 얼마나 출력 할 지 설정
         PhotonNetwork.LogLevel = PunLogLevel.Full;
                 
         //PhotonNetwork.AutomaticallySyncScene: 우리 게임은 플레이어 수에 따라 크기가 변경되는 경기장을 갖게 될 것이고 로드된 씬은 연결하고 있는 모든 플레이어에서 동일 한 것입니다. 우리는 Photon이 제공하는 매우 편리한 기능을 이용할 것 입니다: PhotonNetwork.AutomaticallySyncScene 이 값이 true일 때 MasterClient는 PhotonNetwork.LoadLevel()을 호출 할 수 있고 모든 연결된 플레이어들은 동일한 레벨을 자동적으로 로드 할 것입니다.
         PhotonNetwork.AutomaticallySyncScene = true;
 
+        startBtn.interactable = false;
     }
 
     private void Start()
@@ -60,6 +57,7 @@ public class NetManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster 호출됨");
+        stateText.text = "Photon Server에 입장 함";
         PhotonNetwork.JoinLobby();
     }
 
@@ -68,8 +66,9 @@ public class NetManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("OnJoinedLobby 호출됨");
-        //PhotonNetwork.JoinRandomOrCreateRoom();
-        PhotonNetwork.CreateRoom("Temp", new RoomOptions { MaxPlayers = 2 }, null);
+        stateText.text = "Lobby에 입장 함";
+        PhotonNetwork.JoinOrCreateRoom("Temp", new RoomOptions { MaxPlayers = 2 }, null);
+        //PhotonNetwork.CreateRoom("Temp", new RoomOptions { MaxPlayers = 2 }, null);
     }
 
     // Room에 접속하면 호출되는 콜백 함수.
@@ -77,6 +76,8 @@ public class NetManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom 호출됨");
+        stateText.text = "Room에 입장 함";
+        startBtn.interactable = true;
     }
 
     // Room을 만들면 호출되는 콜백 함수.
@@ -84,7 +85,7 @@ public class NetManager : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         Debug.Log("OnCreatedRoom 호출됨");
-        PhotonNetwork.Disconnect();
+        //PhotonNetwork.Disconnect();
     }
 
     // 연결이 끊어지면 실행되는 콜백 함수.
