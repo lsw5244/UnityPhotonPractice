@@ -42,6 +42,7 @@ MonoBehaviour:
   - GameStart
   - PlayerInstantiate
   - CheckLog
+  - OtherPlayerInstantiate
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

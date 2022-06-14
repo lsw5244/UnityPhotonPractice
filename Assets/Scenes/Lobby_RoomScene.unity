@@ -715,7 +715,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 529107264}
         m_TargetAssemblyTypeName: NetManager, Assembly-CSharp
-        m_MethodName: ButtonFunc
+        m_MethodName: SendMessageBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

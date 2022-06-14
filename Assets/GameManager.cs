@@ -5,7 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IPunObservable
 {
     public Transform leftPlayerPos;
     public Transform rightPlayerPos;
@@ -15,13 +15,16 @@ public class GameManager : MonoBehaviour
     {
         if(PhotonNetwork.IsMasterClient == true)
         {
-            GetComponent<PhotonView>().RPC("PlayerInstantiate", RpcTarget.All);
+            PhotonNetwork.Instantiate("Player", leftPlayerPos.position, Quaternion.identity);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate("Player", rightPlayerPos.position, Quaternion.identity);
         }
     }
 
-
     [PunRPC]
-    void PlayerInstantiate()
+    void OtherPlayerInstantiate()
     {
         if (PhotonNetwork.IsMasterClient == true)
         {
@@ -29,6 +32,9 @@ public class GameManager : MonoBehaviour
             Debug.Log("마스터 클라이언트가 생성함");
         }
         else
+        {
+
+        }
         {
             PhotonNetwork.Instantiate("Player", rightPlayerPos.position, Quaternion.Euler(0, 180, 0));
             Debug.Log("일반 클라이언트가 생성함");
@@ -39,5 +45,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //throw new System.NotImplementedException();
     }
 }
